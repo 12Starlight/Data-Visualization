@@ -21,7 +21,8 @@ circles.enter()
         })
         .attr('cy', 25)
         .attr('r', (d) => {
-            console.log('Item: ' + d);
-            return 25; 
+            // console.log('Item: ' + d);
+            // return 25; 
+            return d; 
         })
         .attr('fill', 'red')
