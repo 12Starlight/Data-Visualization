@@ -4,7 +4,7 @@
 *    2.7 - Loading external data
 */
 
-d3.tsv('data/ages.tsv').then((data) => {
+d3.tsv('data/age.tsv').then((data) => {
     data.forEach((d) => {
         d.age = +d.age; // putting + in front, converts to integer
     })
@@ -33,6 +33,8 @@ d3.tsv('data/ages.tsv').then((data) => {
                     return 'red'
                 }
             })
+}).catch((error) => {
+    console.log(error)
 });
 
 
