@@ -16,10 +16,12 @@ const circles = svg.selectAll('circle')
 circles.enter()
     .append('circle')
         .attr('cx', (d, i) => {
-            console.log('Item: ' + d, 'Index: ' + i);
+            // console.log('Item: ' + d, 'Index: ' + i);
+            return (i * 50) + 25;
         })
         .attr('cy', 25)
         .attr('r', (d) => {
             console.log('Item: ' + d);
+            return 25; 
         })
         .attr('fill', 'red')
