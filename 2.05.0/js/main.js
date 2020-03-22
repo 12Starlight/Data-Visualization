@@ -15,9 +15,17 @@ const rect = svg.append('rect')
   .attr('width', 200)
   .attr('fill', 'blue');
 
-const elipse = svg.append('elipse')
-  .attr('ey', 200)
-  .attr('ex', 200)
-  .attr('height', 100)
-  .attr('width', 100)
-  .attr('fill', 'red') 
+const line = svg.append('line')
+  .attr('x1', 20)
+  .attr('y1', 70)
+  .attr('x2', 100)
+  .attr('y2', 350)
+  .attr('stroke', 'brown')
+  .attr('stroke-width', 5);
+
+const ellipse = svg.append('ellipse')
+  .attr('cx', 300)
+  .attr('cy', 300)
+  .attr('rx', 50)
+  .attr('ry', 70)
+  .attr('fill', 'yellow')
