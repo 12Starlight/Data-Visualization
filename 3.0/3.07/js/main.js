@@ -17,11 +17,17 @@ d3.json('data/buildings.json').then((data) => {
     });
 
     const x = d3.scaleBand()
-        .domain([
-            'Burj Khalifa', 'Shanghai Tower', 'Abraj Al-Bait Clock Tower',
-            'Ping An Finance Centre', 'Lotte World Tower', 'One World Trade Center',
-            'Guangzhou CTF Finance Center'
-        ]) // needs to be spelled correctly, when hard coded
+        // needs to be spelled correctly, when hard coded
+        // .domain([
+        //     'Burj Khalifa', 'Shanghai Tower', 'Abraj Al-Bait Clock Tower',
+        //     'Ping An Finance Centre', 'Lotte World Tower', 'One World Trade Center',
+        //     'Guangzhou CTF Finance Center'
+        // ])
+        
+        // used .map to create an array of values
+        .domain(data.map((d) => {
+            return d.name; 
+        }))
         .range([0, 400])
         .paddingInner(0.3)
         .paddingOuter(0.3);
