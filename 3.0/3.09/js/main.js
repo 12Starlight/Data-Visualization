@@ -12,8 +12,8 @@ const height = 400 - margin.top - margin.bottom;
 
 const svg = d3.select('#chart-area')
     .append('svg')
-    .attr('width', '400')
-    .attr('height', '400')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom);
 
 d3.json('data/buildings.json').then((data) => {
     console.log(data);
@@ -26,7 +26,7 @@ d3.json('data/buildings.json').then((data) => {
         .domain(data.map((d) => {
             return d.name;
         }))
-        .range([0, 400])
+        .range([0, width])
         .paddingInner(0.3)
         .paddingOuter(0.3);
 
@@ -34,7 +34,7 @@ d3.json('data/buildings.json').then((data) => {
         .domain([0, d3.max(data, (d) => {
             return d.height;
         })])
-        .range([0, 400]);
+        .range([0, height]);
 
     var rects = svg.selectAll('rect')
         .data(data)
