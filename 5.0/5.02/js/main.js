@@ -95,7 +95,7 @@ d3.json('data/revenues.json').then((data) => {
         .attr('width', x.bandwidth)
         .attr('fill', 'grey')
 
-    d3.interval(() => {
-        console.log('Hello World! I Can Learn D3');
-    }, 1000);
+    // d3.interval(() => {
+    //     console.log('Hello World! I Can Learn D3');
+    // }, 1000);
 });
