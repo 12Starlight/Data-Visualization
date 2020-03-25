@@ -61,6 +61,7 @@ d3.json('data/buildings.json').then((data) => {
         .domain([0, d3.max(data, (d) => {
             return d.height; 
         })])
+        // reversed coordinates
         .range([height, 0])    
 
     // Build xAxisCall
@@ -94,6 +95,7 @@ d3.json('data/buildings.json').then((data) => {
     rects.enter()
         .append('rect')
         .attr('y', (d) => {
+            // the y axis needs to start at the height 
             return y(d.height);
         })
         .attr('x', (d) => {
@@ -101,6 +103,7 @@ d3.json('data/buildings.json').then((data) => {
         })
         .attr('width', x.bandwidth)
         .attr('height', (d) => {
+            // the bar height needs to be the height difference 
             return height - y(d.height);
         })
         .attr('fill', 'grey');
