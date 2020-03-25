@@ -84,7 +84,7 @@ const update = (data) => {
     g.append('g')
         .attr('class', 'x axis')
         .attr('transform', 'translate(0, ' + height + ')')
-        .call(xAxisCall);
+        xAxisGroup.call(xAxisCall);
 
     // Y Axis
     const yAxisCall = d3.axisLeft(y)
@@ -93,7 +93,7 @@ const update = (data) => {
         })
     g.append('g')
         .attr('class', 'y axis')
-        .call(yAxisCall);
+        yAxisGroup.call(yAxisCall);
 
 
     // // Bars 
