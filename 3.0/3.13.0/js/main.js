@@ -28,7 +28,7 @@ g.append('text')
   .attr('font-weight', '500')
   .attr('text-anchor', 'middle')
   .text('Month');
-
+ 
 // Y Label
 g.append('text')
   .attr('class', 'y axis-label')
