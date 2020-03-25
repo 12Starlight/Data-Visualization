@@ -19,12 +19,22 @@ const g = d3.select('#chart-area')
 
 // X Label
 g.append('text')
-    .attr('class', 'x-axis-label')
+    .attr('class', 'x axis-label')
     .attr('x', width / 2)
     .attr('y', height + 140)
     .attr('font-size', '20px')
     .attr('text-anchor', 'middle')
     .text('The World\'s Tallest Buildings')
+
+// Y Label
+g.append('text')
+    .attr('class', 'y axis-label')
+    .attr('x', - (height / 2))
+    .attr('y', -60)
+    .attr('font-size', '20px')
+    .attr('text-anchor', 'middle')
+    .attr('transform', 'rotate(-90)')
+    .text('Height (m)');     
 
 
 d3.json('data/buildings.json').then((data) => {
