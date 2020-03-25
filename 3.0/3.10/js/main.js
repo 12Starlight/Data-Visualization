@@ -49,7 +49,11 @@ d3.json('data/buildings.json').then((data) => {
                 .attr('text-anchor', 'end')
                 .attr('transform', 'rotate(-40)')
 
-    const yAxisCall = d3.axisLeft(y);
+    const yAxisCall = d3.axisLeft(y)
+        .ticks(3)
+        .tickFormat((d) => {
+            return d + 'm';
+        });
         g.append('g')
             .attr('class', 'y-axis')
             .call(yAxisCall);
