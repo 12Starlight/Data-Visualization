@@ -28,15 +28,6 @@ const xAxisGroup = g.append('g')
 const yAxisGroup = g.append('g')
     .attr('class', 'y axis');
 
-// X Scale
-const x = d3.scaleBand()
-    .range([0, width])
-    .padding(0.2);
-
-// Y Scale
-const y = d3.scaleLinear()
-    .range([height, 0]);
-
 // X Label
 g.append('text')
     .attr('y', height + 50)
@@ -64,7 +55,7 @@ d3.json('data/revenues.json').then((data) => {
     })
 
     d3.interval(() => {
-        update(data)        
+        update(data);        
     }, 1000);
 
     // Run the vis for the first time
@@ -72,12 +63,20 @@ d3.json('data/revenues.json').then((data) => {
 });
 
 const update = (data) => {
-    x.domain(data.map((d) => {
-        return d.month; 
-    }))
-    y.domain([0, d3.max(data, (d) => {
-        return d.revenue; 
-    })])
+    // X Scale
+    const x = d3.scaleBand()
+        .domain(data.map((d) => {
+            return d.month;
+        }))
+        .range([0, width])
+        .padding(0.2);
+
+    // Y Scale
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(data, (d) => {
+            return d.revenue;
+        })])
+        .range([height, 0]);
 
     // X Axis 
     const xAxisCall = d3.axisBottom(x);
@@ -92,4 +91,20 @@ const update = (data) => {
 
 
     // Bars 
+    // const rects = g.selectAll('rect')
+    //     .data(data);
+
+    // rects.enter()
+    //     .append('rect')
+    //         .attr('y', (d) => {
+    //             return y(d.revenue);
+    //         })
+    //         .attr('x', (d) => {
+    //             return x(d.month);
+    //         })
+    //         .attr('height', (d) => {
+    //             return height - y(d.revenue);
+    //         })
+    //         .attr('width', x.bandwidth)
+    //         .attr('fill', 'grey');
 }
