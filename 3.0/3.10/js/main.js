@@ -81,4 +81,16 @@ d3.json('data/buildings.json').then((data) => {
     
     const rects = g.selectAll('rect')
         .data(data)
+
+    rects.enter() 
+        .append('rect')
+            .attr('y', 0)
+            .attr('x', (d) => {
+                return x(d.name);
+            })
+            .attr('width', x.bandwidth)
+            .attr('height', (d) => {
+                return y(d.height);
+            })
+            .attr('fill', 'grey');
 })
