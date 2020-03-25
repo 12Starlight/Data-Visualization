@@ -63,10 +63,33 @@ d3.json('data/revenues.json').then((data) => {
         d.revenue = +d.revenue; 
     })
 
-    // d3.interval(() => {
-    //     update(data)        
-    // }, 1000);
+    d3.interval(() => {
+        update(data)        
+    }, 1000);
 
     // Run the vis for the first time
     update(data)
 });
+
+const update = (data) => {
+    x.domain(data.map((d) => {
+        return d.month; 
+    }))
+    y.domain([0, d3.max(data, (d) => {
+        return d.revenue; 
+    })])
+
+    // X Axis 
+    const xAxisCall = d3.axisBottom(x);
+        xAxisGroup.call(xAxisCall);
+
+    // Y Axis
+    const yAxisCall = d3.axisLeft(y)
+        .tickFormat((d) => {
+            return '$' + d;
+        })
+        yAxisGroup.call(yAxisCall);
+
+
+    // Bars 
+}
