@@ -34,5 +34,59 @@ d3.json('data/revenues.json').then((data) => {
     d.profit = +d.profit; 
   })
 
+  // Build x axis
+  const x = d3.scaleBand()
+    .domain(data.map((d) => {
+      return d.month;
+    }))
+    .range([0, width])
+    .paddingInner(0.3)
+    .paddingOuter(0.3);
 
+  // Build y axis
+  const y = d3.scaleLinear()
+    .domain([0, d3.max(data, (d) => {
+      return d.revenue;
+    })])
+    // reversed coordinates
+    .range([height, 0])
+
+  // Build xAxisCall (Axis Generator)
+  const xAxisCall = d3.axisBottom(x);
+  g.append('g')
+    .attr('class', 'x-axis')
+    .attr('transform', 'translate(0, ' + height + ')')
+    .call(xAxisCall)
+
+  // Build yAxisCall (Axis Generator)
+  const yAxisCall = d3.axisLeft(y)
+    .ticks(10)
+    .tickFormat((d) => {
+      return '$' + d; 
+    });
+  g.append('g')
+    .attr('class', 'y-axis')
+    .call(yAxisCall);
+
+  
+  // Create Rectangles Using Data
+  const rects = g.selectAll('rect')
+    .data(data)
+
+  // Format Rectangles
+  rects.enter() 
+    .append('rect')
+    .attr('y', (d) => {
+      // the y axis needs to start at the height
+      return y(d.revenue);
+    })
+    .attr('x', (d) => {
+      return x(d.month);
+    })
+    .attr('width', x.bandwidth)
+    .attr('height', (d) => {
+      // the bar height needs to be the height difference
+      return height - y(d.revenue);
+    })
+    .attr('fill', 'grey');
 })
