@@ -15,6 +15,9 @@ const svg = d3.select('#chart-area')
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom);
 
+const g = svg.append('g')
+    .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')')
+
 d3.json('data/buildings.json').then((data) => {
     console.log(data);
 
@@ -36,7 +39,7 @@ d3.json('data/buildings.json').then((data) => {
         })])
         .range([0, height]);
 
-    var rects = svg.selectAll('rect')
+    var rects = g.selectAll('rect')
         .data(data)
     
     rects.enter()
