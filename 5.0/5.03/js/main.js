@@ -67,8 +67,8 @@ d3.json('data/revenues.json').then((data) => {
         update(data);        
     }, 1000);
 
-    // Run the vis for the first time
-    update(data)
+    // Run the vis for the first time, which stops the delay for the axis to be rendered
+    update(data);
 });
 
 const update = (data) => {
