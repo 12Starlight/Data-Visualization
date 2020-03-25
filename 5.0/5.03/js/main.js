@@ -17,7 +17,7 @@ const g = d3.select('#chart-area')
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom)
     .append('g')
-    .attr('transform', 'translate(' + margin.left + margin.top + ')');
+    .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
 
 // X Axis (Axis Generator)
 const xAxisGroup = g.append('g')
