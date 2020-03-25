@@ -5,7 +5,7 @@
 */
 
 // Build Margin
-const margin = { left: 50, right: 20, top: 10, bottom: 30 };
+const margin = { left: 80, right: 20, top: 10, bottom: 50 };
 
 // Incorporate Margin
 const width = 600 - margin.left - margin.right;
@@ -21,9 +21,24 @@ const g = d3.select('#chart-area').append('svg')
 
 // X Label
 g.append('text')
+  .attr('class', 'x axis-label')
+  .attr('x', width / 2)
+  .attr('y', height + 50)
+  .attr('font-size', '21px')
+  .attr('font-weight', '500')
+  .attr('text-anchor', 'middle')
+  .text('Month');
 
 // Y Label
 g.append('text')
+  .attr('class', 'y axis-label')
+  .attr('x', - (height / 2))
+  .attr('y', -60)
+  .attr('font-size', '21px')
+  .attr('font-weight', '500')
+  .attr('transform', 'rotate(-90)')
+  .attr('text-anchor', 'middle')
+  .text('Revenue')
 
 // Get External Data
 d3.json('data/revenues.json').then((data) => {
