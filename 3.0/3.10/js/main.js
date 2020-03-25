@@ -64,8 +64,8 @@ d3.json('data/buildings.json').then((data) => {
             .attr('transform', 'translate(0, ' + height + ')')
             .call(xAxisCall)
             .selectAll('text')
-                .attr('y', '10')
                 .attr('x', '-5')
+                .attr('y', '10')
                 .attr('text-anchor', 'end')
                 .attr('transform', 'rotate(-40)')
 
