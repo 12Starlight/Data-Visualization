@@ -19,12 +19,12 @@ const g = d3.select('#chart-area')
     .append('g')
     .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
 
-// X Axis (Axis Generator)
+// X Axis Group
 const xAxisGroup = g.append('g')
     .attr('class', 'x axis')
     .attr('transform', 'translate(0, ' + height + ')');
 
-// Y Axis (Axis Generator)
+// Y Axis Group
 const yAxisGroup = g.append('g')
     .attr('class', 'y axis');
 
@@ -80,15 +80,20 @@ const update = (data) => {
     })])
 
     // X Axis 
-    const xAxisCall = d3.axisBottom(x);
-        xAxisGroup.call(xAxisCall);
+    const xAxisCall = d3.axisBottom(x)
+    g.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(0, ' + height + ')')
+        .call(xAxisCall);
 
     // Y Axis
     const yAxisCall = d3.axisLeft(y)
         .tickFormat((d) => {
             return '$' + d;
         })
-        yAxisGroup.call(yAxisCall);
+    g.append('g')
+        .attr('class', 'y axis')
+        .call(yAxisCall);
 
 
     // // Bars 
