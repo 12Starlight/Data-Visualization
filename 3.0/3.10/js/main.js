@@ -17,6 +17,16 @@ const g = d3.select('#chart-area')
     .append('g')
     .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')')
 
+// X Label
+g.append('text')
+    .attr('class', 'x-axis-label')
+    .attr('x', width / 2)
+    .attr('y', height + 140)
+    .attr('font-size', '20px')
+    .attr('text-anchor', 'middle')
+    .text('The World\'s Tallest Buildings')
+
+
 d3.json('data/buildings.json').then((data) => {
     console.log(data);
 
