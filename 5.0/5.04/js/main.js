@@ -96,7 +96,19 @@ const update = (data) => {
     rects.exit().remove(); 
 
     // UPDATE old elements present in new data 
-        
+    rects
+        .attr('y', (d) => {
+            return y(d.revenue);
+        })
+        .attr('x', (d) => {
+            return x(d.month);
+        })
+        .attr('height', (d) => {
+            return height - y(d.revenue);
+        })
+        .attr('width', x.bandwidth) 
+    
+    // ENTER new elements present in new data 
     rects.enter()
         .append('rect')
             .attr('y', (d) => {
