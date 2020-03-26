@@ -61,6 +61,7 @@ d3.json('data/revenues.json').then((data) => {
     // Clean Data
     data.forEach((d) => {
         d.revenue = +d.revenue;
+        d.profit = +d.profit; 
     });
 
     d3.interval(() => {
