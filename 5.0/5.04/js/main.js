@@ -88,10 +88,14 @@ const update = (data) => {
     yAxisGroup.call(yAxisCall);
 
     
-    // Bars
+    // Bars // JOIN new data with old elements
     const rects = g.selectAll('rect')
         .data(data)
 
+    // EXIT old elements not present in new data
+    rects.exit().remove(); 
+
+    // UPDATE old elements present in new data 
         
     rects.enter()
         .append('rect')
