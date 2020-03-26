@@ -46,7 +46,7 @@ g.append('text')
     .text('Month')
 
 // Y Label
-g.append.('text')
+g.append('text')
     .attr('y', -60)
     .attr('x', -(height / 2))
     .attr('font-size', '20px')
@@ -72,3 +72,39 @@ d3.json('data/revenues.json').then((data) => {
 });
 
 
+// Build Update
+const update = (data) => {
+    x.domain(data.map((d) => d.month));
+    y.domain([0, d3.max(data, (d) => d.revenue)]);
+
+    // X Axis
+    const xAxisCall = d3.axisBottom(x);
+    xAxisGroup.call(xAxisCall);
+
+    // Y Axis
+    const yAxisCall = d3.axisLeft(y)
+        .tickFormat((d) => '$' + d)
+    yAxisGroup.call(yAxisCall);
+
+    
+    // Bars
+    const rects = g.selectAll('rect')
+        .data(data)
+
+        
+    rects.enter()
+        .append('rect')
+            .attr('y', (d) => {
+                return y(d.revenue);
+            })
+            .attr('x', (d) => {
+                return x(d.month);
+            })
+            .attr('height', (d) => {
+                return height - y(d.revenue);
+            })
+            .attr('width', x.bandwidth)
+            .attr('fill', 'grey');
+        
+    console.log(rects); 
+}
