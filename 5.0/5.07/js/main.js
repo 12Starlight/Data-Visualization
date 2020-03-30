@@ -14,6 +14,9 @@ const height = 400 - margin.top - margin.bottom;
 // Create Boolean Flag
 let flag = true; 
 
+// Build Transition
+const t = d3.transition().duration(750); 
+
 // Build SVG, Group SVG
 const g = d3.select('#chart-area')
     .append('svg')
