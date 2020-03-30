@@ -98,7 +98,7 @@ const update = (data) => {
     // UPDATE old elements present in new data 
     rects
         .attr('y', (d) => {
-            return y(d.revenue);
+            return y(d.revenue); 
         })
         .attr('x', (d) => {
             return x(d.month);
