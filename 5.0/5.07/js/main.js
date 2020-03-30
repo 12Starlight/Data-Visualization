@@ -109,7 +109,7 @@ const update = (data) => {
 
     // EXIT old elements not present in new data
     rects.exit()
-        .attr('fill', 'red')
+        .attr('fill', 'royalblue')
         .transition(t)
             .attr('y', y(0))
             .attr('height', 0)
