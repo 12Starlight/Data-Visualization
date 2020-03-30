@@ -104,36 +104,31 @@ const update = (data) => {
 
 
     // Bars // JOIN new data with old elements
-    const rects = g.selectAll('rect')
+    const rects = g.selectAll('circle')
         .data(data, (d) => d.month);
 
     // EXIT old elements not present in new data
     rects.exit()
         .attr('fill', 'royalblue')
         .transition(t)
-            .attr('y', y(0))
-            .attr('height', 0)
+            .attr('cy', y(0))
             .remove(); 
 
     // Enter new elements present in new data
     rects.enter()
-        .append('rect')
-            .attr('x', (d) => x(d.month))
-            .attr('width', x.bandwidth)
+        .append('circle')
+            .attr('cx', (d) => x(d.month))
             .attr('fill', 'grey')
             // Add intial state before transition
-            .attr('y', y(0))
-            .attr('height', 0)
+            .attr('cy', y(0))
+            .attr('r', 5)
 
             // And UPDATE old elements present in new data
             .merge(rects)
         .transition(t)
-            .attr('x', (d) => x(d.month))
-            .attr('width', x.bandwidth)
-            .attr('y', (d) => y(d[value]))
-            .attr('height', (d) => {
-                return height - y(d[value]);
-            })
+            .attr('cx', (d) => x(d.month))
+            .attr('cy', (d) => y(d[value]))
+            .attr('r', 5)
 
     let label = flag ? 'Revenue' : 'Profit';
     yLabel.text(label); 
