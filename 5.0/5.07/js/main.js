@@ -93,12 +93,12 @@ const update = (data) => {
 
     // X Axis
     const xAxisCall = d3.axisBottom(x);
-    xAxisGroup.call(xAxisCall);
+    xAxisGroup.transition(t).call(xAxisCall);
 
     // Y Axis
     const yAxisCall = d3.axisLeft(y)
         .tickFormat((d) => '$' + d)
-    yAxisGroup.call(yAxisCall);
+    yAxisGroup.transition(t).call(yAxisCall);
 
 
     // Bars // JOIN new data with old elements
