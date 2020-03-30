@@ -12,7 +12,7 @@ const width = 600 - margin.left - margin.right;
 const height = 400 - margin.top - margin.bottom;
 
 // Create Boolean Flag
-const flag = true;  
+let flag = true;  
 
 // Build SVG, Group SVG
 const g = d3.select('#chart-area')
@@ -49,13 +49,13 @@ g.append('text')
     .text('Month')
 
 // Y Label
-g.append('text')
+let yLabel = g.append('text')
     .attr('y', -60)
     .attr('x', -(height / 2))
     .attr('font-size', '20px')
     .attr('text-anchor', 'middle')
     .attr('transform', 'rotate(-90)')
-    .attr('Revenue');
+    .text('Revenue');
 
 // Retrieve Data
 d3.json('data/revenues.json').then((data) => {
@@ -69,8 +69,69 @@ d3.json('data/revenues.json').then((data) => {
 
     d3.interval(() => {
         update(data)
+        flag = !flag
     }, 1000);
 
     // Run the vis for the first time, corrects delay
     update(data);
 });
+
+
+// Build Update
+const update = (data) => {
+    let value = flag ? 'revenue' : 'profit'
+
+    x.domain(data.map((d) => d.month));
+    y.domain([0, d3.max(data, (d) => {
+        return d[value]
+    })]);
+
+    // X Axis
+    const xAxisCall = d3.axisBottom(x);
+    xAxisGroup.call(xAxisCall);
+
+    // Y Axis
+    const yAxisCall = d3.axisLeft(y)
+        .tickFormat((d) => '$' + d)
+    yAxisGroup.call(yAxisCall);
+
+    
+    // Bars // JOIN new data with old elements
+    const rects = g.selectAll('rect')
+        .data(data)
+    
+    // EXIT old elements not present in new data
+    rects.exit().remove();
+
+    // UPDATE old elements present in new data
+    rects  
+        .attr('y', (d) => {
+            return y(d[value]);
+        })
+        .attr('x', (d) => {
+            return x(d.month)
+        })
+        .attr('height', (d) => {
+            return height - y(d[value]);
+        })
+        .attr('width', x.bandwidth)
+        
+    // ENTER new elements presesnt in new data
+    rects.enter()
+        .append('rect')
+            .attr('y', (d) => {
+                return y(d[value]);
+            })
+            .attr('x', (d) => {
+                return x(d.month);
+            })
+            .attr('height', (d) => {
+                return height - y(d[value]);
+            })
+            .attr('width', x.bandwidth)
+            .attr('fill', 'grey');
+    
+    let label = flag ? 'Revenue' : 'Profit';
+    yLabel.text(label)
+    console.log(rects);
+}
