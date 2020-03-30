@@ -109,9 +109,9 @@ d3.json("data/data.json").then((data) => {
 	// Run the code every 0.1 second
 	d3.interval(() => {
 		// At the end of our data, loop back
-		time = (time < 214) ? time + 1 : 0;
+		time = (time < 214) ? time+1 : 0;
 		update(formatted[time]);
-	}, 100);
+	}, 300);
 
 	// First run of the visualization, corrects delay
 	update(formatted[0]); 
