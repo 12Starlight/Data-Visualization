@@ -70,7 +70,7 @@ d3.json('data/revenues.json').then((data) => {
     d3.interval(() => {
         update(data)
         flag = !flag
-    }, 1000);
+    }, 1500);
 
     // Run the vis for the first time, corrects delay
     update(data);
