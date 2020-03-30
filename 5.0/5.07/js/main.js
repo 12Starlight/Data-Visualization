@@ -114,7 +114,7 @@ const update = (data) => {
             .remove();
 
     // UPDATE old elements present in new data
-    rects 
+    rects.transition(t) 
         .attr('y', (d) => {
             return y(d[value]);
         })
