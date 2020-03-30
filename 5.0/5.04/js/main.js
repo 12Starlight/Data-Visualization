@@ -81,7 +81,7 @@ const update = (data) => {
     // X Axis
     const xAxisCall = d3.axisBottom(x);
     xAxisGroup.call(xAxisCall);
-
+ 
     // Y Axis
     const yAxisCall = d3.axisLeft(y)
         .tickFormat((d) => '$' + d)
