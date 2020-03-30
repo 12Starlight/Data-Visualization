@@ -12,13 +12,13 @@ const width = 800 - margin.left - margin.right;
 const height = 500 - margin.top - margin.bottom;
 
 // Create Time Variable
-const time = 0; 
+let time = 0; 
 
 // Create Boolean Flag
 let flag = true;
 
 // Build Transition
-const t = d3.transition().duration(750);
+const t = d3.transition().duration(100);
 
 // Build SVG, Group SVG
 const g = d3.select('#chart-area')
@@ -44,7 +44,7 @@ const area = d3.scaleLinear()
 	.range([25 * Math.PI, 1500 * Math.PI])
 	.domain([2000, 1400000000]);
 
-const continentColor = d3.scaleOrdinal(d3.schemePaste1); 
+const continentColor = d3.scaleOrdinal(d3.schemePastel1); 
 
 // X Label
 let xLabel = g.append('text')
@@ -92,7 +92,63 @@ g.append('g')
 d3.json("data/data.json").then((data) => {
 	console.log(data);
 
-	data.forEach((year) => {
+	// Clean data
+	const formatted = data.map((year) => {
+		return year.countries.filter((country) => {
+			let dataExists = (country.income && country.life_exp);
+			// console.log(dataExists); 
+			return dataExists; 
+		}).map((country) => {
+			country.income = +country.income;
+			country.life_exp = +country.life_exp;
+			// console.log(country); 
+			return country;
+		})
+	});
 
-	})
+	// Run the code every 0.1 second
+	d3.interval(() => {
+		// At the end of our data, loop back
+		time = (time < 214) ? time + 1 : 0;
+		update(formatted[time]);
+	}, 100);
+
+	// First run of the visualization, corrects delay
+	update(formatted[0]); 
 })
+
+
+const update = (data) => {
+
+	// JOIN new data with old elements
+	const circles = g.selectAll('circle').data(data, (d) => {
+		return d.country;
+	});
+
+	// EXIT old elements not present in new data
+	circles.exit()
+		.attr('class', 'exit')
+		.remove();
+
+	// ENTER new elements present in new data
+	circles.enter()
+		.append('circle')
+		.attr('class', 'enter')
+		.attr('fill', (d) => {
+			return continentColor(d.continent);
+		})
+		.merge(circles)
+		.transition(t)
+			.attr('cy', (d) => {
+				return y(d.life_exp);
+			})
+			.attr('cx', (d) => {
+				return x(d.income);
+			})
+			.attr('r', (d) => {
+				return Math.sqrt(area(d.population) / Math.PI);
+			})
+
+		// Update the time label
+		timeLabel.text(+(time + 1800)); 
+}
