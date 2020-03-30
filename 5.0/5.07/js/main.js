@@ -106,7 +106,12 @@ const update = (data) => {
         .data(data);
 
     // EXIT old elements not present in new data
-    rects.exit().remove();
+    rects.exit()
+        .attr('fill', 'red')
+        .transition(t)
+            .attr('y', y(0))
+            .attr('height', 0)
+            .remove();
 
     // UPDATE old elements present in new data
     rects 
