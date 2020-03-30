@@ -72,6 +72,22 @@ let timeLabel = g.append('text')
 	.attr('text-anchor', 'middle')
 	.text('1800')
 
+// X Axis
+const xAxisCall = d3.axisBottom(x)
+	.tickValues([400, 4000, 40000])
+	.tickFormat(d3.format('$'));
+g.append('g')
+	.attr('class', 'x axis')
+	.attr('transform', 'translate(0, ' + height + ')')
+	.call(xAxisCall);
+
+// Y Axis
+const yAxisCall = d3.axisLeft(y)
+	.tickFormat((d) => +d);
+g.append('g')
+	.attr('class', 'y axis')
+	.call(yAxisCall); 
+
 // Retrieve Data
 d3.json("data/data.json").then((data) => {
 	console.log(data);
