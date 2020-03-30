@@ -46,7 +46,7 @@ g.append('text')
     .attr('y', height + 50)
     .attr('x', width / 2)
     .attr('font-size', '20px')
-    .attrr('text-anchor', 'middle')
+    .attr('text-anchor', 'middle')
     .text('Month');
 
 // Y Label
@@ -78,3 +78,63 @@ d3.json('data/revenues.json').then((data) => {
     update(data);
 });
 
+
+// Build Update
+const update = (data) => {
+    let value = flag ? 'revenue' : 'profit';
+
+    x.domain(data.map((d) => d.month));
+    y.domain([0, d3.max(data, (d) => {
+        return d[value];
+    })]);
+
+    // X Axis
+    const xAxisCall = d3.axisBottom(x);
+    xAxisGroup.call(xAxisCall);
+
+    // Y Axis
+    const yAxisCall = d3.axisLeft(y)
+        .tickFormat((d) => '$' + d)
+    yAxisGroup.call(yAxisCall);
+
+
+    // Bars // JOIN new data with old elements
+    const rects = g.selectAll('rect')
+        .data(data);
+
+    // EXIT old elements not present in new data
+    rects.exit().remove();
+
+    // UPDATE old elements present in new data
+    rects 
+        .attr('y', (d) => {
+            return y(d[value]);
+        })
+        .attr('x', (d) => {
+            return x(d.month);
+        })
+        .attr('height', (d) => {
+            return height - y(d[value]);
+        })
+        .attr('width', x.bandwidth)
+
+    // ENTER new elements present in new data
+    rects.enter()
+        .append('rect')
+            .attr('y', (d) => {
+                return y(d[value]);
+            })
+            .attr('x', (d) => {
+                return x(d.month);
+            })
+            .attr('height', (d) => {
+                return height - y(d[value]);
+            })
+            .attr('width', x.bandwidth)
+            .attr('fill', 'grey');
+
+    let label = flag ? 'Revenue' : 'Profit';
+    yLabel.text(label)
+
+    console.log(rects); 
+}
