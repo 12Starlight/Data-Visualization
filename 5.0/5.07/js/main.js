@@ -129,17 +129,21 @@ const update = (data) => {
     // ENTER new elements present in new data
     rects.enter()
         .append('rect')
-            .attr('y', (d) => {
-                return y(d[value]);
-            })
             .attr('x', (d) => {
                 return x(d.month);
             })
+            .attr('width', x.bandwidth)
+            .attr('fill', 'grey')
+            // Add initial state before transition
+            .attr('y', y(0))
+            .attr('height', 0)
+        .transition(t)
+            .attr('y', (d) => {
+                return y(d[value]);
+            })  
             .attr('height', (d) => {
                 return height - y(d[value]);
             })
-            .attr('width', x.bandwidth)
-            .attr('fill', 'grey');
 
     let label = flag ? 'Revenue' : 'Profit';
     yLabel.text(label)
