@@ -81,7 +81,7 @@ function update(data) {
 
     // Y Axis
     var yAxisCall = d3.axisLeft(y)
-        .tickFormat(function(d){ return "$" + d; });
+        .tickFormat(function(d){ return "$" + d; }); 
     yAxisGroup.call(yAxisCall);
 
     // JOIN new data with old elements.
