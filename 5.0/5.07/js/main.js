@@ -73,7 +73,9 @@ d3.json('data/revenues.json').then((data) => {
     });
 
     d3.interval(() => {
-        update(data)
+        let newData = flag ? data : data.slice(1)
+
+        update(newData)
         flag = !flag
     }, 1500);
 
@@ -103,7 +105,7 @@ const update = (data) => {
 
     // Bars // JOIN new data with old elements
     const rects = g.selectAll('rect')
-        .data(data);
+        .data(data, (d) => d.month); // 
 
     // EXIT old elements not present in new data
     rects.exit()
@@ -114,17 +116,17 @@ const update = (data) => {
             .remove();
 
     // UPDATE old elements present in new data
-    rects.transition(t) 
-        .attr('y', (d) => {
-            return y(d[value]);
-        })
-        .attr('x', (d) => {
-            return x(d.month);
-        })
-        .attr('height', (d) => {
-            return height - y(d[value]);
-        })
-        .attr('width', x.bandwidth)
+    // rects.transition(t) 
+    //     .attr('y', (d) => {
+    //         return y(d[value]);
+    //     })
+    //     .attr('x', (d) => {
+    //         return x(d.month);
+    //     })
+    //     .attr('height', (d) => {
+    //         return height - y(d[value]);
+    //     })
+    //     .attr('width', x.bandwidth)
 
     // ENTER new elements present in new data
     rects.enter()
@@ -137,7 +139,11 @@ const update = (data) => {
             // Add initial state before transition
             .attr('y', y(0))
             .attr('height', 0)
+            // AND UPDATE old elements present in new data
+            .merge(rects)
         .transition(t)
+            .attr('x', (d) => x(d.month))
+            .attr('width', x.bandwidth)
             .attr('y', (d) => {
                 return y(d[value]);
             })  
