@@ -117,7 +117,7 @@ const update = (data) => {
     // Enter new elements present in new data
     rects.enter()
         .append('circle')
-            .attr('cx', (d) => x(d.month))
+            .attr('cx', (d) => x(d.month) + x.bandwidth() / 2)
             .attr('fill', 'grey')
             // Add intial state before transition
             .attr('cy', y(0))
@@ -126,7 +126,7 @@ const update = (data) => {
             // And UPDATE old elements present in new data
             .merge(rects)
         .transition(t)
-            .attr('cx', (d) => x(d.month))
+            .attr('cx', (d) => x(d.month) + x.bandwidth() / 2)
             .attr('cy', (d) => y(d[value]))
             .attr('r', 5)
 
