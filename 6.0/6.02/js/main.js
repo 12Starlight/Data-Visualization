@@ -88,6 +88,29 @@ g.append('g')
     .attr('class', 'y axis')
     .call(yAxisCall);
 
+// Build Legend
+const continents = ['europe', 'asia', 'americas', 'africa'];
+
+const legend = g.append('g')
+    .attr('transform', 'translate(' + (width - 10) + ', ' + (height - 125) + ')')
+
+continents.forEach((continent, i) => {
+    const legendRow = legend.append('g')
+        .attr('transform', 'translate(0, ' + (i * 20) + ')');
+
+    legendRow.append('rect')
+        .attr('width', 10)
+        .attr('height', 10)
+        .attr('fill', continentColor(continent));
+
+    legendRow.append('text')
+        .attr('x', -10)
+        .attr('y', 10)
+        .attr('text-anchor', 'end')
+        .style('text-transform', 'capitalize')
+        .text(continent); 
+});
+    
 
 // Retrieve Data
 d3.json('data/data.json').then((data) => {
