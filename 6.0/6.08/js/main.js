@@ -46,7 +46,7 @@ yAxis.append("text")
     .attr("dy", ".71em")
     .style("text-anchor", "end")
     .attr("fill", "#5D6971")
-    .text("Population)");
+    .text("Population)"); 
 
 // Line path generator
 var line = d3.line()
