@@ -165,7 +165,8 @@ const step = () => {
 
 $('#play-button')
     .on('click', function() {
-
+        let button = $(this);
+        button.text('Pause');
         interval = setInterval(step, 100);
     })
 
@@ -177,7 +178,7 @@ const update = (data) => {
     // JOIN new data with old element
     const circles = g.selectAll('circle').data(data, (d) => {
         return d.country;
-    });
+    }); 
 
     // EXIT new elements not present in new data
     circles.exit()
