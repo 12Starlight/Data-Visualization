@@ -263,5 +263,5 @@ const update = (data) => {
     $('#year')[0].innerHTML = +(time + 1800)
 
     console.log($('#year')[0]); // Gives the actual node/ html tag
-    $('#date-slider').slider('value', +(time + 1800)); // What does this do?
+    $('#date-slider').slider('value', +(time + 1800)); 
 }   
