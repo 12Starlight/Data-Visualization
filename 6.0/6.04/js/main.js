@@ -18,7 +18,7 @@ let time = 0;
 let flag = true;
 
 // Build Transition
-const t = d3.transition().duration(100);
+const t = d3.transition().duration(0);
 
 // Build SVG, Group SVG
 const g = d3.select('#chart-area')
@@ -32,7 +32,7 @@ const g = d3.select('#chart-area')
 const x = d3.scaleLog()
     .base(10)
     .range([0, width])
-    .domain([0, 150000]);
+    .domain([150, 150000]);
 
 // Y Scale 
 const y = d3.scaleLinear()
@@ -67,7 +67,7 @@ let yLabel = g.append('text')
 // Time Label
 let timeLabel = g.append('text')
     .attr('y', height - 10)
-    .attr('x', width = 40)
+    .attr('x', width - 40)
     .attr('font-size', '40px')
     .attr('opacity', '0.4')
     .attr('text-anchor', 'middle')
@@ -109,5 +109,71 @@ continents.forEach((continent, i) => {
         .attr('y', 10)
         .attr('text-anchor', 'end')
         .style('text-transform', 'capitalize')
-        .text(continent)
+        .text(continent);
+});
+
+
+// Retrieve Data
+d3.json('data/data.json').then((data) => {
+    console.log(data);
+
+    // Clean data
+    const formattedData = data.map((year) => {
+        return year.countries.filter((country) => {
+            let dataExists = (country.income && country.life_exp);
+            // console.log(dataExists);
+            return dataExists;
+        }).map((country) => {
+            country.income = +country.income;
+            country.life_exp = +country.life_exp;
+            // console.log(country)
+            return country; 
+        })
+    });
+
+    // Run the code every 0.1 second
+    d3.interval(() => {
+        // At the end of our data, loop back
+        time = (time < 214) ? time + 1 : 0;
+        update(formattedData[time]);
+    }, 300);
+
+    // First run of the visualization, corrects delay
+    update(formattedData[0]);
 })
+
+
+// Build Update Function
+const update = (data) => {
+    // JOIN new data with old elements
+    const circles = g.selectAll('circle').data(data, (d) => {
+        return d.country;
+    });
+
+    // EXIT old elements not present in new data
+    circles.exit()
+        .attr('class', 'exit')
+        .remove();
+
+    // Enter new elements present in new data
+    circles.enter()
+        .append('circle')
+        .attr('class', 'enter')
+        .attr('fill', (d) => {
+            return continentColor(d.continent);
+        })
+        .merge(circles)
+        .transition(t)
+            .attr('cy', (d) => {
+                return y(d.life_exp);
+            })
+            .attr('cx', (d) => {
+                return x(d.income);
+            })
+            .attr('r', (d) => {
+                return Math.sqrt(area(d.population) / Math.PI);
+            })
+
+    // Update the time label
+    timeLabel.text(+(time + 1800));
+}
