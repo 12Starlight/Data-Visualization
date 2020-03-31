@@ -30,11 +30,11 @@ const g = svg.append('g')
         ', ' + margin.top + ')');
 
 // Time parser for x-scale
-const parseTime = d3.timeParse('%Y');
+let parseTime = d3.timeParse('%Y');
 
 // For tooltip
-const bisectDate = d3.bisector((d) => { 
-        return d.year; 
+let bisectDate = d3.bisector((d) => { 
+        return parseTime(d.date); 
     }).left;
 
 // Scales
@@ -70,10 +70,10 @@ yAxis.append('text')
 // Line path generator
 let line = d3.line()
     .x((d) => { 
-        return x(d.year); 
+        return x(parseTime(d.date)); 
     })
     .y((d) => { 
-        return y(d.value); 
+        return y(d.price_usd); 
     });
 
 d3.json('data/coins.json').then((data) => {
@@ -83,7 +83,7 @@ d3.json('data/coins.json').then((data) => {
     const keys = Object.keys(data);
     console.log(keys);
 
-    let formattedData = keys.map((key) => {
+    formattedData = keys.map((key) => {
 
         return data[key].filter((crypto) => {
             let dataExists = (crypto['24h_vol'] && crypto.date && crypto.market_cap && crypto.price_usd)
@@ -101,14 +101,14 @@ d3.json('data/coins.json').then((data) => {
 
     // Set scale domains
     x.domain(d3.extent(data, (d) => { 
-        return d.year; 
+        return parseTime(d.date); 
     }));
     y.domain([d3.min(data, (d) => { 
-        return d.value; 
-    }) / 1.005, 
+        return d.price_usd; 
+    }), 
         d3.max(data, (d) => { 
-            return d.value; 
-        }) * 1.005]);
+            return d.price_usd; 
+        })]);
 
     // Generate axes once scales have been set
     xAxis.call(xAxisCall.scale(x))
@@ -120,7 +120,7 @@ d3.json('data/coins.json').then((data) => {
         .attr('fill', 'none')
         .attr('stroke', 'grey')
         .attr('stroke-with', '3px')
-        .attr('d', line(data));
+        .attr('d', line(formattedData[0]));
 
     /******************************** Tooltip Code ********************************/
 
@@ -155,14 +155,14 @@ d3.json('data/coins.json').then((data) => {
 
     function mousemove() {
         var x0 = x.invert(d3.mouse(this)[0]),
-            i = bisectDate(data, x0, 1),
-            d0 = data[i - 1],
-            d1 = data[i],
-            d = x0 - d0.year > d1.year - x0 ? d1 : d0;
-        focus.attr('transform', 'translate(' + x(d.year) + ',' + y(d.value) + ')');
-        focus.select('text').text(d.value);
-        focus.select('.x-hover-line').attr('y2', height - y(d.value));
-        focus.select('.y-hover-line').attr('x2', -x(d.year));
+            i = bisectDate(formattedData, x0, 1),
+            d0 = formattedData[i - 1],
+            d1 = formattedData[i],
+            d = x0 - parseTime(d0.date) > parseTime(d1.date) - x0 ? d1 : d0;
+        focus.attr('transform', 'translate(' + x(parseTime(d.date)) + ',' + y(d.price_usd) + ')');
+        focus.select('text').text(d.price_usd);
+        focus.select('.x-hover-line').attr('y2', height - y(d.price_usd));
+        focus.select('.y-hover-line').attr('x2', -x(parseTime(d.date)));
     }
 
 
