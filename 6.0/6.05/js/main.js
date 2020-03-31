@@ -14,11 +14,17 @@ const height = 500 - margin.top - margin.bottom;
 // Create Time Variable
 let time = 0;
 
+// Create Interval Variable
+let interval; 
+
+// Create formattedData Variable
+let formattedData;
+
 // Create Boolean Flag
 let flag = true;
 
 // Build Transition
-const t = d3.transition().duration(0);
+// let t = d3.transition().duration(100); // Why does this break as a global?
 
 // Build SVG, Group SVG
 const g = d3.select('#chart-area')
@@ -133,7 +139,7 @@ d3.json('data/data.json').then((data) => {
     console.log(data);
 
     // Clean data
-    const formattedData = data.map((year) => {
+    formattedData = data.map((year) => {
         return year.countries.filter((country) => {
             let dataExists = (country.income && country.life_exp);
             // console.log(dataExists);
@@ -146,21 +152,29 @@ d3.json('data/data.json').then((data) => {
         })
     });
 
-    // Run the code every 0.1 second
-    d3.interval(() => {
-        // At the end of our data, loop back
-        time = (time < 214) ? time + 1 : 0;
-        update(formattedData[time]);
-    }, 300);
-
     // First run of the visualization, corrects delay
     update(formattedData[0]);
 })
 
+// Build Step Function // Interval Function
+const step = () => {
+    // At the end of our data, loop back
+    time = (time < 214) ? time + 1 : 0;
+    update(formattedData[time]);
+}
 
-// Build Update Function
+$('#play-button')
+    .on('click', function() {
+
+        interval = setInterval(step, 100);
+    })
+
+// Build Update Function 
 const update = (data) => {
-    // JOIN new data with old elements
+    // Build Transition
+    let t = d3.transition().duration(100);
+
+    // JOIN new data with old element
     const circles = g.selectAll('circle').data(data, (d) => {
         return d.country;
     });
