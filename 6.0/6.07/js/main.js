@@ -136,6 +136,12 @@ continents.forEach((continent, i) => {
 
 // Retrieve Data
 d3.json('data/data.json').then((data) => {
+    /* 
+        first we change all string data types to integer
+        then we filter out all objects that have null values
+        then we return the final array of objects
+    */
+
     console.log(data);
 
     // Clean data
@@ -156,7 +162,7 @@ d3.json('data/data.json').then((data) => {
         })
     });
 
-    console.log(formattedData[200])
+    console.log(formattedData)
 
     // First run of the visualization, corrects delay
     // update(formattedData[0]);
