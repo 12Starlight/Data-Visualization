@@ -205,6 +205,18 @@ $('#content-select')
         update(formattedData[time]);
     })
 
+// Build Slider
+$('#date-slider').slider({
+    max: 2014,
+    min: 1800,
+    step: 1,
+    slide: (event, ui) => {
+        time = ui.value - 1800;
+        // console.log(ui.value);
+        update(formattedData[time])
+    }
+})
+
 // Build Update Function
 const update = (data) => {
     // Build Transition
@@ -248,4 +260,8 @@ const update = (data) => {
 
     // Update the time label
     timeLabel.text(+(time + 1800));
-}
+    $('#year')[0].innerHTML = +(time + 1800)
+
+    console.log($('#year')[0]); // Gives the actual node/ html tag
+    $('#date-slider').slider('value', +(time + 1800)); // What does this do?
+}   
