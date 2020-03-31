@@ -165,10 +165,87 @@ d3.json('data/data.json').then((data) => {
         })
     });
 
-    console.log(formattedData)
+    // console.log(formattedData)
 
     // First run of the visualization, corrects delay
-    // update(formattedData[0]);
+    update(formattedData[0]);
 })
 
-// console.log(formattedData[0])
+// Build Step Function // Interval Function
+const step = () => {
+    // At the end of our data, loop back
+    time = (time < 214) ? time + 1 : 0;
+    update(formattedData[time]);
+}
+
+// Build Play/Pause Button
+$('#play-button')
+    .on('click', function() {
+        let button = $(this);
+
+        if (button.text() === 'Play') {
+            button.text('Pause');
+            interval = setInterval(step, 100);
+        } else {
+            button.text('Play');
+            clearInterval(interval);
+        }
+    })
+
+// Build Reset Button
+$('#reset-button')
+    .on('click', function() {
+        time = 0;
+        update(formattedData[0]);
+    })
+
+// Update data based on selection
+$('#content-select')
+    .on('change', () => {
+        update(formattedData[time]);
+    })
+
+// Build Update Function
+const update = (data) => {
+    // Build Transition
+    let t = d3.transition().duration(100);
+
+    // Build Continent Filter
+    let continent = $('#continent-select').val();
+
+    data = data.filter((d) => {
+        if (continent === 'all') {
+            return true;
+        } else {
+            return d.continent === continent; 
+        }
+    })
+
+    // JOIN new data with old element
+    const circles = g.selectAll('circle').data(data, (d) => {
+        return d.country; 
+    });
+
+    // EXIT new elements not present in new data
+    circles.exit()
+        .attr('class', 'exit')
+        .remove(); 
+
+    // ENTER new elements present in new data
+    circles.enter()
+        .append('circle')
+        .attr('class', 'enter')
+        .attr('fill', (d) => {
+            return continentColor(d.continent);
+        })
+        .on('mouseover', tip.show)
+        .on('mouseout', tip.hide)
+        .merge(circles)
+        .transition(t)
+            .attr('cy', (d) => y(d.life_exp))
+            .attr('cx', (d) => x(d.income))
+            .attr('r', (d) => Math.sqrt(area(d.population) / Math.PI));
+
+    // Update the time label
+    timeLabel.text(+(time + 1800));
+}
