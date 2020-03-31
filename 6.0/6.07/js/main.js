@@ -140,6 +140,9 @@ d3.json('data/data.json').then((data) => {
         first we change all string data types to integer
         then we filter out all objects that have null values
         then we return the final array of objects
+
+        make sure for every .map or .filter to put a return statement
+        in each block of code
     */
 
     console.log(data);
