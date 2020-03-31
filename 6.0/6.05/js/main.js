@@ -166,14 +166,28 @@ const step = () => {
 $('#play-button')
     .on('click', function() {
         let button = $(this);
-        button.text('Pause');
-        interval = setInterval(step, 100);
+
+        if (button.text() === 'Play') {
+            button.text('Pause');
+            interval = setInterval(step, 100);
+        } else {
+            button.text('Play'); 
+            clearInterval(interval)
+        } 
+    })
+
+$('#reset-button')
+    .on('click', function() {
+        time = 0;
+        update(formattedData[0])
     })
 
 // Build Update Function 
 const update = (data) => {
     // Build Transition
     let t = d3.transition().duration(100);
+
+    let continent; 
 
     // JOIN new data with old element
     const circles = g.selectAll('circle').data(data, (d) => {
