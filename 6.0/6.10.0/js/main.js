@@ -53,12 +53,13 @@ var line = d3.line()
     .x(function(d) { return x(d.year); })
     .y(function(d) { return y(d.value); });
 
-d3.json("data/example.json").then(function(data) {
+d3.json("data/coins.json").then(function(data) {
+    console.log(data); 
+
     // Data cleaning
-    data.forEach(function(d) {
-        d.year = parseTime(d.year);
-        d.value = +d.value;
-    });
+    const keys = Object.keys(data);
+    console.log(keys);
+
 
     // Set scale domains
     x.domain(d3.extent(data, function(d) { return d.year; }));
