@@ -28,6 +28,15 @@ const g = d3.select('#chart-area')
     .append('g')
     .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
 
+// Build Tooltip
+const tip = d3.tip().attr('class', 'd3-tip') // Initialize the ToolTip
+    .html((d) => {
+        return d;
+    });
+
+g.call(tip); // Set context for ToolTip // Needs to be set after g is defined
+// Add two event listeners in ENTER
+
 // X Scale
 const x = d3.scaleLog()
     .base(10)
@@ -162,6 +171,8 @@ const update = (data) => {
         .attr('fill', (d) => {
             return continentColor(d.continent);
         })
+        .on('mouseover', tip.show)
+        .on('mouseout', tip.hide)
         .merge(circles)
         .transition(t)
             .attr('cy', (d) => {
