@@ -179,7 +179,7 @@ $('#play-button')
 $('#reset-button')
     .on('click', function() {
         time = 0;
-        update(formattedData[0])
+        update(formattedData[0]);
     })
 
 // Build Update Function 
@@ -187,7 +187,9 @@ const update = (data) => {
     // Build Transition
     let t = d3.transition().duration(100);
 
-    let continent; 
+    // Build Continent Filter
+    let continent = $('#continent-select').val();
+
 
     // JOIN new data with old element
     const circles = g.selectAll('circle').data(data, (d) => {
