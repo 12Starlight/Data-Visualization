@@ -163,6 +163,7 @@ const step = () => {
     update(formattedData[time]);
 }
 
+// Build Play/Pause Button
 $('#play-button')
     .on('click', function() {
         let button = $(this);
@@ -176,10 +177,17 @@ $('#play-button')
         } 
     })
 
+// Build Reset Button
 $('#reset-button')
     .on('click', function() {
         time = 0;
         update(formattedData[0]);
+    })
+
+// Update data based on selection 
+$('#continent-select')
+    .on('change', () => {
+        update(formattedData[time]);
     })
 
 // Build Update Function 
@@ -190,6 +198,13 @@ const update = (data) => {
     // Build Continent Filter
     let continent = $('#continent-select').val();
 
+    data = data.filter((d) => {
+        if (continent === 'all') {
+            return true;
+        } else {
+            return d.continent === continent;
+        }
+    })
 
     // JOIN new data with old element
     const circles = g.selectAll('circle').data(data, (d) => {
