@@ -132,3 +132,34 @@ continents.forEach((continent, i) => {
         .style('text-transform', 'capitalize')
         .text(continent); 
 });
+
+
+// Retrieve Data
+d3.json('data/data.json').then((data) => {
+    console.log(data);
+
+    // Clean data
+    formattedData = data.map((year) => {
+
+        return year.countries.filter((country) => {
+            let dataExists = (country.income && country.life_exp);
+            // console.log(dataExists);
+            return dataExists;
+
+           // When adding a second .map to change any part of the data, you 
+           // must return what you changed or the entire function will break 
+        }).map((country) => {
+            country.income = +country.income;
+            country.life_exp = +country.life_exp;
+            // console.log(country); 
+            return country; 
+        })
+    });
+
+    console.log(formattedData[200])
+
+    // First run of the visualization, corrects delay
+    // update(formattedData[0]);
+})
+
+// console.log(formattedData[0])
