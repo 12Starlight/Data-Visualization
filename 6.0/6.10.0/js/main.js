@@ -42,12 +42,25 @@ const x = d3.scaleTime().range([0, width]);
 const y = d3.scaleLinear().range([height, 0]);
 
 // Axis generators
-const xAxisCall = d3.axisBottom()
-const yAxisCall = d3.axisLeft()
+const xAxisCall = d3.axisBottom(x)
+    .ticks(4)
+    .tickFormat((d) => {
+        return parseTime(d.date); 
+    });
+g.append('g')
+    .attr('class', 'x axis')
+    .attr('transform', 'translate(0 ' + height +')')
+    .call(xAxisCall); 
+
+
+const yAxisCall = d3.axisLeft(y)
     .ticks(6)
     .tickFormat((d) => { 
         return parseInt(d / 1000) + 'k'; 
     });
+g.append('g')
+    .attr('class', 'y axis')
+    .call(yAxisCall); 
 
 // Axis groups X
 const xAxis = g.append('g')
@@ -59,13 +72,16 @@ const yAxis = g.append('g')
     
 // Y-Axis label
 yAxis.append('text')
+    // .attr('x', width / 2)
     .attr('class', 'axis-title')
     .attr('transform', 'rotate(-90)')
-    .attr('y', 6)
-    .attr('dy', '.71em')
+    .attr('y', -50)
+    .attr('x', -120)
+    .attr('font-size', '20px')
+    .attr('font-weight', '500')
     .style('text-anchor', 'end')
     .attr('fill', '#5D6971')
-    .text('Population)');
+    .text('Price (USD)');
 
 // Line path generator
 let line = d3.line()
@@ -98,15 +114,18 @@ d3.json('data/coins.json').then((data) => {
     })
 
     console.log(formattedData); 
+    console.log(formattedData[0].map((d) => {
+        return d.price_usd; 
+    }));
 
     // Set scale domains
-    x.domain(d3.extent(data, (d) => { 
+    x.domain(d3.extent(formattedData[0], (d) => { 
         return parseTime(d.date); 
     }));
-    y.domain([d3.min(data, (d) => { 
+    y.domain([d3.min(formattedData[0], (d) => { 
         return d.price_usd; 
     }), 
-        d3.max(data, (d) => { 
+        d3.max(formattedData[0], (d) => { 
             return d.price_usd; 
         })]);
 
