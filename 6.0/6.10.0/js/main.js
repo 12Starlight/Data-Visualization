@@ -38,29 +38,30 @@ let bisectDate = d3.bisector((d) => {
     }).left;
 
 // Scales
-const x = d3.scaleTime().range([0, width]);
+const x = d3.scaleTime()
+    .range([0, width])
+    .domain(d3.extent(data, (d) => {
+        return d.date; 
+    }))
+
 const y = d3.scaleLinear().range([height, 0]);
 
-// Axis generators
+// X Axis generator
 const xAxisCall = d3.axisBottom(x)
-    .ticks(4)
-    .tickFormat((d) => {
-        return parseTime(d.date); 
-    });
+    .tickValues([400, 4000, 40000])
+    // .tickFormat(d3.format('yr'));
 g.append('g')
     .attr('class', 'x axis')
     .attr('transform', 'translate(0 ' + height +')')
     .call(xAxisCall); 
 
-
+// Y Axis generator
 const yAxisCall = d3.axisLeft(y)
     .ticks(6)
     .tickFormat((d) => { 
         return parseInt(d / 1000) + 'k'; 
     });
-g.append('g')
-    .attr('class', 'y axis')
-    .call(yAxisCall); 
+
 
 // Axis groups X
 const xAxis = g.append('g')
