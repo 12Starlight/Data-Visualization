@@ -20,6 +20,11 @@ let formattedData;
 // Create Boolean Flag
 let flat = true;
 
+// Build Transition
+let t = () => {
+    return d3.transition().duration(1000);
+}
+
 // Build SVG, Group SVG
 const svg = d3.select('#chart-area').append('svg')
     .attr('width', width + margin.left + margin.right)
@@ -30,37 +35,55 @@ const g = svg.append('g')
         ', ' + margin.top + ')');
 
 // Time parser for x-scale
-let parseTime = d3.timeParse('%Y');
+let parseTime = d3.timeParse('%d/%m/%Y');
+
+// Format Time
+let formatTime = d3.timeFormat('%d/%m/%Y');
 
 // For tooltip
 let bisectDate = d3.bisector((d) => { 
-        return parseTime(d.date); 
+        return d.date; 
     }).left;
 
-// Scales
-const x = d3.scaleTime()
-    .range([0, width])
-    .domain(d3.extent(data, (d) => {
-        return d.date; 
-    }))
+// Add line to chart
+g.append('path')
+    .attr('class', 'line')
+    .attr('fill', 'none')
+    .attr('stroke', 'grey')
+    .attr('stroke-with', '3px')
 
+
+// X-Axis Label
+let xLabel = g.append('text')
+    .attr('class', 'x axisLabel')
+    .attr('y', height + 50)
+    .attr('x', width / 2)
+    .attr('font-size', '20px')
+    .attr('text-anchor', 'middle')
+    .text('Time');
+
+// Y-Axis Label
+let yLabel = g.append('text')
+    .attr('class', 'y axisLabel')
+    .attr('transform', 'rotate(-90)')
+    .attr('y', -60)
+    .attr('x', -170)
+    .attr('font-size', '20px')
+    .attr('font-weight', '500')
+    .style('text-anchor', 'middle')
+    .attr('fill', '#5D6971')
+    .text('Price (USD)');
+
+// Scales
+const x = d3.scaleTime().range([0, width])
 const y = d3.scaleLinear().range([height, 0]);
 
 // X Axis generator
-const xAxisCall = d3.axisBottom(x)
-    .tickValues([400, 4000, 40000])
-    // .tickFormat(d3.format('yr'));
-g.append('g')
-    .attr('class', 'x axis')
-    .attr('transform', 'translate(0 ' + height +')')
-    .call(xAxisCall); 
+const xAxisCall = d3.axisBottom()
+    .ticks(4)
 
 // Y Axis generator
-const yAxisCall = d3.axisLeft(y)
-    .ticks(6)
-    .tickFormat((d) => { 
-        return parseInt(d / 1000) + 'k'; 
-    });
+const yAxisCall = d3.axisLeft()
 
 
 // Axis groups X
@@ -71,18 +94,7 @@ const xAxis = g.append('g')
 const yAxis = g.append('g')
     .attr('class', 'y axis')
     
-// Y-Axis label
-yAxis.append('text')
-    // .attr('x', width / 2)
-    .attr('class', 'axis-title')
-    .attr('transform', 'rotate(-90)')
-    .attr('y', -50)
-    .attr('x', -120)
-    .attr('font-size', '20px')
-    .attr('font-weight', '500')
-    .style('text-anchor', 'end')
-    .attr('fill', '#5D6971')
-    .text('Price (USD)');
+
 
 // Line path generator
 let line = d3.line()
@@ -134,12 +146,7 @@ d3.json('data/coins.json').then((data) => {
     xAxis.call(xAxisCall.scale(x))
     yAxis.call(yAxisCall.scale(y))
 
-    // Add line to chart
-    g.append('path')
-        .attr('class', 'line')
-        .attr('fill', 'none')
-        .attr('stroke', 'grey')
-        .attr('stroke-with', '3px')
+
         .attr('d', line(formattedData[0]));
 
     /******************************** Tooltip Code ********************************/
