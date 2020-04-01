@@ -45,12 +45,12 @@ let bisectDate = d3.bisector((d) => {
         return d.date; 
     }).left;
 
-// Add line to chart
+// Add line to chart for the first time
 g.append('path')
     .attr('class', 'line')
     .attr('fill', 'none')
     .attr('stroke', 'blue')
-    .attr('stroke-width', '3px')
+    .attr('stroke-width', '3px');
 
 // X-Axis Label
 let xLabel = g.append('text')
@@ -170,18 +170,6 @@ const update = () => {
     d3.select('.focus').remove();
     d3.select('.overlay').remove();
 
-    // Create Mouse Move
-    function mousemove() {
-        let x0 = x.invert(d3.mouse(this)[0]),
-            i = bisectDate(dataTimeFiltered, x0, 1),
-            d0 = dataTimeFiltered[i - 1],
-            d1 = dataTimeFiltered[i],
-            d = (d1 && d0) ? (x0 - d0.date > d1.date - x0 ? d1 : d0) : 0;
-        focus.attr('transform', 'translate(' + x(d.date) + ', ' + y(d[yValue]) + ')');
-        focus.select('text').text(() => d3.format('$,')(d[yValue].toFixed(2)));
-        focus.select('.x-hover-line').attr('y2', height - y(d[yValue]));
-        focus.select('.y-hover-line').attr('x2', -x(d.date));
-
     // ToolTip Code
     var focus = g.append('g')
         .attr('class', 'focus')
@@ -211,6 +199,19 @@ const update = () => {
             focus.style('display', 'none');
         })
         .on('mousemove', mousemove);
+
+
+    // Create Mouse Move
+    function mousemove() {
+        let x0 = x.invert(d3.mouse(this)[0]),
+            i = bisectDate(dataTimeFiltered, x0, 1),
+            d0 = dataTimeFiltered[i - 1],
+            d1 = dataTimeFiltered[i],
+            d = (d1 && d0) ? (x0 - d0.date > d1.date - x0 ? d1 : d0) : 0;
+        focus.attr('transform', 'translate(' + x(d.date) + ', ' + y(d[yValue]) + ')');
+        focus.select('text').text(() => d3.format('$,')(d[yValue].toFixed(2)));
+        focus.select('.x-hover-line').attr('y2', height - y(d[yValue]));
+        focus.select('.y-hover-line').attr('x2', -x(d.date));
     
     }
 
