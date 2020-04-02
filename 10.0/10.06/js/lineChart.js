@@ -25,9 +25,9 @@ LineChart.prototype.initVis = function(){
         .attr("transform", "translate(" + vis.margin.left + 
             ", " + vis.margin.top + ")");
 
-    vis.t = function() { return d3.transition().duration(1000); }
+    vis.t = () => d3.transition().duration(1000); 
 
-    vis.bisectDate = d3.bisector(function(d) { return d.date; }).left;
+    vis.bisectDate = d3.bisector((d) => d.date).left;
 
     vis.linePath = vis.g.append("path")
         .attr("class", "line")
@@ -67,7 +67,7 @@ LineChart.prototype.wrangleData = function(){
 
     // Filter data based on selections
     vis.sliderValues = $("#date-slider").slider("values")
-    vis.dataFiltered = filteredData[vis.coin].filter(function(d) {
+    vis.dataFiltered = filteredData[vis.coin].filter((d) => {
         return ((d.date >= vis.sliderValues[0]) && (d.date <= vis.sliderValues[1]))
     })
 
@@ -79,13 +79,13 @@ LineChart.prototype.updateVis = function(){
     var vis = this;
 
     // Update scales
-    vis.x.domain(d3.extent(vis.dataFiltered, function(d) { return d.date; }));
-    vis.y.domain([d3.min(vis.dataFiltered, function(d) { return d[vis.yVariable]; }) / 1.005, 
-        d3.max(vis.dataFiltered, function(d) { return d[vis.yVariable]; }) * 1.005]);
+    vis.x.domain(d3.extent(vis.dataFiltered, (d) => d.date));
+    vis.y.domain([d3.min(vis.dataFiltered, (d) => d[vis.yVariable]) / 1.005, 
+        d3.max(vis.dataFiltered, (d) => d[vis.yVariable]) * 1.005]);
 
     // Fix for y-axis format values
     var formatSi = d3.format(".2s");
-    function formatAbbreviation(x) {
+    let formatAbbreviation = (x) => {
       var s = formatSi(x);
       switch (s[s.length - 1]) {
         case "G": return s.slice(0, -1) + "B";
