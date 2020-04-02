@@ -51,6 +51,13 @@
             .sum(function(d) { return d.value; })
             .sort(function(a, b) { return b.value - a.value; });
 
+
+        // Exploring Data
+        console.log(data);
+        console.log(pack(root));
+        console.log(pack(root).descendants());
+
+
         // Adds an x, y, and r value to each node
         pack(root);
 
