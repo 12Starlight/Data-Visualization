@@ -4,7 +4,7 @@
 *    10.6 - D3 Brushes
 */
 
-Timeline = function(_parentElement){
+Timeline = function(_parentElement) {
     this.parentElement = _parentElement;
 
     this.initVis();
@@ -70,17 +70,17 @@ Timeline.prototype.wrangleData = function(){
 Timeline.prototype.updateVis = function(){
     var vis = this;
 
-    vis.x.domain(d3.extent(vis.data, function(d) { return d.date; }));
-    vis.y.domain([0, d3.max(vis.data, function(d) { return d[vis.yVariable]; }) ])
+    vis.x.domain(d3.extent(vis.data, (d) => d.date ));
+    vis.y.domain([0, d3.max(vis.data, (d) => d[vis.yVariable]) ]);
 
     vis.xAxisCall.scale(vis.x)
 
     vis.xAxis.transition(vis.t()).call(vis.xAxisCall)
 
     vis.area = d3.area()
-        .x(function(d) { return vis.x(d.date); })
+        .x((d) => vis.x(d.date))
         .y0(vis.height)
-        .y1(function(d) { return vis.y(d[vis.yVariable]); })
+        .y1((d) => vis.y(d[vis.yVariable]));
 
     vis.areaPath
         .data([vis.data])

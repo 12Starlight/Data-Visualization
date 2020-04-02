@@ -5,7 +5,7 @@
 */
 
 // Global variables
-const lineChart,
+let lineChart,
     donutChart1,
     donutChart2,
     timeline;
