@@ -51,11 +51,20 @@
     d3.json("data/treemap.json", function(error, data) {
         if (error) throw error;
 
+
+        // Exploring Data Structures
+        console.log(data);
+        console.log(d3.hierarchy(data));
+
+
         // Since we are dealing with hierarchical data, need to convert the data to the right format
         var root = d3.hierarchy(data)
             .eachBefore(function(d) { d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name; })
             .sum(sumBySize)
             .sort(function(a, b) { return b.height - a.height || b.value - a.value; });
+
+        // Exploring Treemap Data Structure
+        console.log(treemap(root).leaves())
 
         // Computes x0, x1, y0, and y1 for each node (where the rectangles should be)
         treemap(root);
