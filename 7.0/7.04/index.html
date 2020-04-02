@@ -55,9 +55,9 @@
         y.domain([0, d3.max(data, function(d) { return d.close; })]);
 
         g.append("path")
-            // .datum(data)
+            // .datum(data) // perform a data join with only one element
             .attr("fill", "steelblue")
-            .attr("d", area(data));
+            .attr("d", area(data)); // ... with several 
 
         g.append("g")
             .attr("transform", "translate(0," + height + ")")
