@@ -60,7 +60,7 @@ function brushed() {
         .slider('values', 0, newValues[0])
         .slider('values', 1, newValues[1]);
     $("#dateLabel1").text(formatTime(newValues[0]));
-    $("#dateLabel2").text(formatTime(newValues[1]));
+    $("#dateLabel2").text(formatTime(newValues[1]));  
     lineChart.wrangleData();
 }
 
