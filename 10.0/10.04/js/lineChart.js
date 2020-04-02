@@ -4,6 +4,7 @@
 *    10.4 - Converting our code to OOP
 */
 
+// Constructor function - make a new visualization project
 LineChart = function(_parentElement, _coin){
     this.parentElement = _parentElement;
     this.coin = _coin
@@ -11,6 +12,7 @@ LineChart = function(_parentElement, _coin){
     this.initVis();
 };
 
+// initVis method - set up static parts of our visualization 
 LineChart.prototype.initVis = function(){
     var vis = this;
 
@@ -30,6 +32,7 @@ LineChart.prototype.initVis = function(){
 
     vis.bisectDate = d3.bisector(function(d) { return d.date; }).left;
 
+    // Add the line for the first time
     vis.linePath = vis.g.append("path")
         .attr("class", "line")
         .attr("fill", "none")
@@ -57,7 +60,7 @@ LineChart.prototype.initVis = function(){
     vis.wrangleData();
 };
 
-
+// wrangleData method - selecting/filtering the data we want to see
 LineChart.prototype.wrangleData = function(){
     var vis = this;
 
@@ -72,7 +75,7 @@ LineChart.prototype.wrangleData = function(){
     vis.updateVis();
 };
 
-
+// updateVis method - updating our elements to match the new data
 LineChart.prototype.updateVis = function(){
     var vis = this;
 
@@ -102,6 +105,7 @@ LineChart.prototype.updateVis = function(){
     d3.select(".focus."+vis.coin).remove();
     d3.select(".overlay."+vis.coin).remove();
 
+    // Tooltip code 
     var focus = vis.g.append("g")
         .attr("class", "focus " + vis.coin)
         .style("display", "none");

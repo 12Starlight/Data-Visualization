@@ -22,6 +22,7 @@ $('#date-slider').slider({
     step: 86400000, // One Day
     values: [parseTime('12/5/2013').getTime(), parseTime('31/10/2017').getTime()],
     slide: (event, ui) => {
+        // debugger; 
         $('#dateLabel1').text(formatTime(new Date(ui.values[0])));
         $('#dateLabel2').text(formatTime(new Date(ui.values[1])));
         update();
@@ -48,6 +49,8 @@ d3.json('data/coins.json').then((data) => {
             d.date = parseTime(d.date)
         });
     }
+
+    console.log(filteredData);
 
     // Run the visualization for the first time
     update();
