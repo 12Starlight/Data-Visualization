@@ -66,11 +66,11 @@ const brushed = () => {
 
 d3.json("data/coins.json").then((data) => {
     // Prepare and clean data
-    for (var coin in data) {
+    for (let coin in data) {
         if (!data.hasOwnProperty(coin)) {
             continue;
         }
-        filteredData[coin] = data[coin].filter(function(d){
+        filteredData[coin] = data[coin].filter((d) => {
             return !(d["price_usd"] == null)
         })
         filteredData[coin].forEach((d) => {
