@@ -5,21 +5,21 @@
 */
 
 // Global variables
-var lineChart,
+const lineChart,
     donutChart1,
     donutChart2,
     timeline;
-var filteredData = {};
-var donutData = [];
-var parseTime = d3.timeParse("%d/%m/%Y");
-var formatTime = d3.timeFormat("%d/%m/%Y");
-var color = d3.scaleOrdinal(d3.schemeDark2);
+const filteredData = {};
+const donutData = [];
+const parseTime = d3.timeParse("%d/%m/%Y");
+const formatTime = d3.timeFormat("%d/%m/%Y");
+const color = d3.scaleOrdinal(d3.schemeDark2);
 
 // Event listeners
-$("#coin-select").on("change", function() {
+$("#coin-select").on("change", () => {
     coinChanged();
 })
-$("#var-select").on("change", function() { 
+$("#var-select").on("change", () => { 
     lineChart.wrangleData();
     timeline.wrangleData();
 })
@@ -31,28 +31,28 @@ $("#date-slider").slider({
     min: parseTime("12/5/2013").getTime(),
     step: 86400000, // One day
     values: [parseTime("12/5/2013").getTime(), parseTime("31/10/2017").getTime()],
-    slide: function(event, ui){
-        dates = ui.values.map(function(val) { return new Date(val); })
-        xVals = dates.map(function(date) { return timeline.x(date); })
+    slide: (event, ui) => {
+        dates = ui.values.map((val) => new Date(val))
+        xVals = dates.map((date) => timeline.x(date))
 
         timeline.brushComponent
             .call(timeline.brush.move, xVals)
     }
 });
 
-function arcClicked(arc){
+const arcClicked = (arc) => {
     $("#coin-select").val(arc.data.coin);
     coinChanged();
 }
 
-function coinChanged(){
+const coinChanged = () => {
     donutChart1.wrangleData();
     donutChart2.wrangleData();
     lineChart.wrangleData();
     timeline.wrangleData();
 }
 
-function brushed() {
+const brushed = () => {
     var selection = d3.event.selection || timeline.x.range();
     var newValues = selection.map(timeline.x.invert)
 
@@ -64,7 +64,7 @@ function brushed() {
     lineChart.wrangleData();
 }
 
-d3.json("data/coins.json").then(function(data){
+d3.json("data/coins.json").then((data) => {
     // Prepare and clean data
     for (var coin in data) {
         if (!data.hasOwnProperty(coin)) {
@@ -73,7 +73,7 @@ d3.json("data/coins.json").then(function(data){
         filteredData[coin] = data[coin].filter(function(d){
             return !(d["price_usd"] == null)
         })
-        filteredData[coin].forEach(function(d){
+        filteredData[coin].forEach((d) => {
             d["price_usd"] = +d["price_usd"];
             d["24h_vol"] = +d["24h_vol"];
             d["market_cap"] = +d["market_cap"];
