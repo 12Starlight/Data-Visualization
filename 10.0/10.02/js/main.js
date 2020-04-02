@@ -28,6 +28,7 @@ $('#date-slider').slider({
     }
 });
 
+// Retreived Data 
 d3.json('data/coins.json').then((data) => {
     console.log(data);
 
