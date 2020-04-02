@@ -28,6 +28,7 @@
         height = 400;
 
     var projection = d3.geoConicEqualArea()
+    // let projection = d3.geoMercator()
         .scale(153)
         .translate([width / 2, height / 2])
         .precision(.1);
