@@ -55,6 +55,7 @@
         y.domain([0, d3.max(data, function(d) { return d.close; })]);
 
         g.append("path")
+            // .datum(data)
             .attr("fill", "steelblue")
             .attr("d", area(data));
 
