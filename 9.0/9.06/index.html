@@ -59,6 +59,12 @@
         root = d3.hierarchy(root)
             .sum(function(d) { return d.size; });
 
+
+        // Exploring Data Structure
+        console.log(root);
+        console.log(partition(root).descendants());
+
+
         // Add an arc for each of the nodes in our hierarchy. partition(root) adds x0, x1, y0, and y1 values to each node.
         svg.selectAll("path")
             .data(partition(root).descendants())
