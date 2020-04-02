@@ -113,6 +113,12 @@ var projection = d3.geoMercator()
                    .scale(130)
                   .translate( [width / 2, height / 1.5]);
 
+    // Exploring Data Structures
+    console.log(path);
+    console.log(svg);            
+    console.log(projection);
+
+
 var path = d3.geoPath().projection(projection);
 
 svg.call(tip);
@@ -127,6 +133,13 @@ function ready(error, data, population) {
 
   population.forEach(function(d) { populationById[d.id] = +d.population; });
   data.features.forEach(function(d) { d.population = populationById[d.id] });
+
+
+  // Explore Data Structures
+  console.log(data);
+  console.log(population); 
+  console.log(data.features);
+
 
   svg.append("g")
       .attr("class", "countries")
