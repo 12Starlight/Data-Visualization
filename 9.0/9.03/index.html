@@ -41,6 +41,14 @@
         var root = stratify(data)
             .sort(function(a, b) { return (a.height - b.height) || a.id.localeCompare(b.id); });
 
+
+        // Exploring Data    
+        console.log(data);
+        console.log(root);
+        console.log(tree(root));
+        console.log(tree(root).links());
+        
+
         // Add the links (given by calling tree(root), which also adds positional x/y coordinates) for the nodes
         var link = g.selectAll(".link")
                 .data(tree(root).links())
