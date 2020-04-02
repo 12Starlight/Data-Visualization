@@ -37,6 +37,7 @@ $("#date-slider").slider({
 function arcClicked(arc){
     $("#coin-select").val(arc.data.coin);
     coinChanged();
+    console.log(arc);
 }
 
 function coinChanged(){
@@ -65,6 +66,8 @@ d3.json("data/coins.json").then(function(data){
             "data": filteredData[coin].slice(-1)[0]
         })
     }
+
+    console.log(donutData); 
 
     lineChart = new LineChart("#line-area");
 
